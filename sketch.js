@@ -12,7 +12,8 @@ var topEdge;
 var x=parseInt((Math.random() * 2), 10);
 var y=parseInt((Math.random() * 2), 10);
 
-
+var largeur=600
+var longueur=600
 
 function preload () {
   raquettegaucheImg = loadImage("raquettegauche.png");
@@ -23,12 +24,12 @@ function preload () {
 }
 
 function setup() {
-   createCanvas(400, 400)
+   createCanvas(largeur, longueur)
   
   
-   raquettedroite = createSprite(390,200,40,70);
-   raquettegauche = createSprite(10, 200, 40,70);
-   balle = createSprite(200,200,20,20);
+   raquettedroite = createSprite(largeur-10,longueur/2,40,70);
+   raquettegauche = createSprite(10, longueur/2, 40,70);
+   balle = createSprite(largeur/2,longueur/2,20,20);
 
   raquettedroite.addAnimation("droite", raquettedroiteImg);
   raquettegauche.addAnimation("gauche",raquettegaucheImg);
@@ -48,11 +49,11 @@ function draw() {
 Filet();
 //afficher le texte "appuyez sur espace" au début du jeu
 if (StatutJeu === "Start") {
-  text("Appuyez sur espace", 150, 200); 
+  text("Appuyez sur espace", largeur*3/8, longueur/2); 
 }
 //afficher les scores
-text(ScorePlayer, 250,20);
-text (ScoreComputer, 150, 20);
+text(ScorePlayer, largeur*5/8,20);
+text(ScoreComputer, largeur*3/8, 20);
 
   //créer les bords 
   createEdgeSprites();
@@ -99,13 +100,13 @@ text (ScoreComputer, 150, 20);
   balle.bounceOff(raquettegauche);
   
   //remettre la balle à sa position intiale lorsqu'un joueur perd le jeu
- if (balle.x<=10 || balle.x>=390) {
+ if (balle.x<=10 || balle.x>=largeur-10) {
  //modifie le score du joueur
  if (balle.x<=10){
      ScorePlayer+=1;
    }
   //modifie le score de l'ordianteur
-  if (balle.x>=390){
+  if (balle.x>=largeur-10){
      ScoreComputer+=1;
    }
    // remet la balle à la position initiale
@@ -114,12 +115,12 @@ text (ScoreComputer, 150, 20);
  }
  // fin du jeu
 if (ScoreComputer===5 || ScorePlayer===5){
-   text("GAME OVER",170,150);
+   text("GAME OVER",largeur*17/40,longueur*3/8);
    StatutJeu="GameOver";
  }
  // afficher "appuyez sur r"
  if (StatutJeu==="GameOver"){
-    text("Appuyez sur R",170,250);
+    text("Appuyez sur R",largeur*17/40,longueur*5/8);
  }
  //remet le jeu au début
  if (keyDown("r")&&StatutJeu==="GameOver"){
@@ -139,14 +140,14 @@ if (ScoreComputer===5 || ScorePlayer===5){
 }
 //crée le filet
 function Filet() {
-  for (var i = 0; i < 400; i=i+30) {
-  line(200, i, 200, i+20); 
+  for (var i = 0; i < longueur; i=i+30) {
+  line(longueur/2, i,longueur/2, i+20); 
   }
 }
 //remet la balle à la position initiale
 function Reset() {
-   balle.x=200;
-   balle.y=200;
+   balle.x=largeur/2;
+   balle.y=longueur/2;
    balle.velocityX=0;
    balle.velocityY=0;
 }
@@ -166,7 +167,7 @@ function Robot () {
   if (Player==="Computer") {
     
     //permet au robot de perdre
-   if (balle.x-raquettegauche.x <20 && Mode=== "battable")  {
+   if (balle.x-raquettegauche.x <largeur/20 && Mode=== "battable")  {
      StatutBall= "près";
     } else {
       StatutBall= "loin";
